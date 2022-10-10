@@ -5,29 +5,29 @@ import './App.css';
 
 class App extends Component {
   // local state
-  constructor(props) {
+  constructor(props) { // Firstly run when App created
     super(props);
 
     this.state = {
       name: 'Fuyang',
-      monsters: []
+      monsters: [], // initial value
     }
   }
 
   // lifecycle methods
-  componentDidMount() {
+  componentDidMount() { // Run after render()
     // need data when the component is loaded
     fetch('https://jsonplaceholder.typicode.com/users')
       .then(res => res.json())
       .then((users) =>
-        this.setState(() => {
+        this.setState(() => { // Will run render() again later
           return {monsters: users}
         }, () => {
           console.log(this.state.monsters)
         }))
   }
 
-  render() {
+  render() { // Run after constructor
     return (<div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo"/>
