@@ -9,8 +9,22 @@ class App extends Component {
     super(props);
 
     this.state = {
-      name: 'Fuyang'
+      name: 'Fuyang',
+      monsters: []
     }
+  }
+
+  // lifecycle methods
+  componentDidMount() {
+    // need data when the component is loaded
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(res => res.json())
+      .then((users) =>
+        this.setState(() => {
+          return {monsters: users}
+        }, () => {
+          console.log(this.state.monsters)
+        }))
   }
 
   render() {
@@ -21,17 +35,22 @@ class App extends Component {
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <p>Hi {this.state.name}</p>
+
+        <div>
+          {this.state.monsters.map((m) => {
+            return <div key={m.id}><h1>{m.name}</h1></div>;
+          })}
+        </div>
+
         <button onClick={() => {
           // this.state's address needs to change to trigger rerender
           // this.setState({name: 'Andrei'}); // shallow merge, async
-          this.setState(
-            (_state, _props) => {
-              return {name: 'Andrei'}
-            },
-            () => {
-              // run after state is set
-              console.log("call back: " + this.state.name)
-            })
+          this.setState((_state, _props) => {
+            return {name: 'Andrei'}
+          }, () => {
+            // run after state is set
+            console.log("call back: " + this.state.name)
+          })
           console.log(this.state.name) // not recommended place to use state
         }}> Change Name
         </button>
