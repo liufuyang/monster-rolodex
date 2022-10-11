@@ -7,27 +7,29 @@ class App extends Component {
   // local state
   constructor(props) { // Firstly run when App created
     super(props);
-
     this.state = {
       name: 'Fuyang',
       monsters: [], // initial value
     }
+    console.log('constructor');
   }
 
   // lifecycle methods
   componentDidMount() { // Run after render()
     // need data when the component is loaded
+    console.log('componentDidMount');
     fetch('https://jsonplaceholder.typicode.com/users')
       .then(res => res.json())
       .then((users) =>
         this.setState(() => { // Will run render() again later
           return {monsters: users}
         }, () => {
-          console.log(this.state.monsters)
+          console.log(this.state)
         }))
   }
 
   render() { // Run after constructor
+    console.log('render')
     return (<div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo"/>
@@ -42,17 +44,19 @@ class App extends Component {
           })}
         </div>
 
-        <button onClick={() => {
-          // this.state's address needs to change to trigger rerender
-          // this.setState({name: 'Andrei'}); // shallow merge, async
-          this.setState((_state, _props) => {
-            return {name: 'Andrei'}
-          }, () => {
-            // run after state is set
-            console.log("call back: " + this.state.name)
-          })
-          console.log(this.state.name) // not recommended place to use state
-        }}> Change Name
+        <button
+          onClick={() => {
+            // this.state's address needs to change to trigger rerender
+            // this.setState({name: 'Andrei'}); // shallow merge, async
+            this.setState((_state, _props) => {
+              return {name: 'Andrei'}
+            }, () => {
+              // run after state is set
+              console.log("call back: " + this.state.name)
+            })
+            console.log(this.state.name) // not recommended place to use state
+          }}
+        > Change Name
         </button>
       </header>
       <div>
