@@ -10,6 +10,7 @@ class App extends Component {
     this.state = {
       name: 'Fuyang',
       monsters: [], // initial value
+      searchField: '',
     }
     console.log('constructor');
   }
@@ -22,24 +23,40 @@ class App extends Component {
       .then(res => res.json())
       .then((users) =>
         this.setState(() => { // Will run render() again later
-          return {monsters: users}
+          return {monsters: users, filteredMonsters: users}
         }, () => {
-          console.log(this.state)
+          // console.log(this.state)
         }))
   }
 
   render() { // Run after constructor
     console.log('render')
+
+    const {name, monsters, searchField} = this.state
+    const {onSearchChange} = this;
+
+    let filteredMonsters = monsters
+    if (searchField != null) {
+      filteredMonsters = monsters.filter((m) => m.name.toLowerCase().includes(searchField.toLowerCase()))
+    }
+
     return (<div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo"/>
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <p>Hi {this.state.name}</p>
+        <p>Hi {name}</p>
+        <input className='search-box' type='search' placeholder='Search monsters'
+               onChange={
+                 // If we define function here, it is created each time it renders
+                 // So we define it outside to make it more efficient
+                 onSearchChange
+               }
+        />
 
         <div>
-          {this.state.monsters.map((m) => {
+          {filteredMonsters.map((m) => {
             return <div key={m.id}><h1>{m.name}</h1></div>;
           })}
         </div>
@@ -63,6 +80,13 @@ class App extends Component {
         G1
       </div>
     </div>);
+  }
+
+  onSearchChange = (event) => {
+    let searchField = event.target.value;
+    this.setState(() => {
+      return {searchField}
+    })
   }
 }
 
