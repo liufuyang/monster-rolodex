@@ -2,10 +2,12 @@ import {Component} from "react";
 
 import logo from './logo.svg';
 import './App.css';
+import CardList from "./components/card-list/card-list.component";
+import SearchBox from "./components/search-box/search-box.component";
 
 class App extends Component {
   // local state
-  constructor(props) { // Firstly run when App created
+  constructor(props) { // *** Firstly run when App created
     super(props);
     this.state = {
       name: 'Fuyang',
@@ -16,7 +18,7 @@ class App extends Component {
   }
 
   // lifecycle methods
-  componentDidMount() { // Run after render()
+  componentDidMount() { // *** Run after render()
     // need data when the component is loaded
     console.log('componentDidMount');
     fetch('https://jsonplaceholder.typicode.com/users')
@@ -29,7 +31,7 @@ class App extends Component {
         }))
   }
 
-  render() { // Run after constructor
+  render() { // *** Run after constructor
     console.log('render')
 
     const {name, monsters, searchField} = this.state
@@ -47,19 +49,12 @@ class App extends Component {
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <p>Hi {name}</p>
-        <input className='search-box' type='search' placeholder='Search monsters'
-               onChange={
-                 // If we define function here, it is created each time it renders
-                 // So we define it outside to make it more efficient
-                 onSearchChange
-               }
-        />
 
-        <div>
-          {filteredMonsters.map((m) => {
-            return <div key={m.id}><h1>{m.name}</h1></div>;
-          })}
-        </div>
+        <SearchBox onChangeHandler={onSearchChange}
+                   placeholder='Search monsters'
+                   className='search-box'
+        />
+        <CardList monsters={filteredMonsters} />
 
         <button
           onClick={() => {
