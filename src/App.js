@@ -44,18 +44,16 @@ class App extends Component {
 
     return (<div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo"/>
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>Hi {name}</p>
+        <h1 className={'App-title'}>Monsters Rolodex</h1>
 
+        <img src={logo} className="App-logo" alt="logo"/>
         <SearchBox onChangeHandler={onSearchChange}
                    placeholder='Search monsters'
                    className='search-box'
         />
         <CardList monsters={filteredMonsters} />
 
+        <p>Hi {name}</p>
         <button
           onClick={() => {
             // this.state's address needs to change to trigger rerender
@@ -71,9 +69,6 @@ class App extends Component {
         > Change Name
         </button>
       </header>
-      <div>
-        G1
-      </div>
     </div>);
   }
 
