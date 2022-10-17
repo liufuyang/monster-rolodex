@@ -11,6 +11,7 @@ const App = () => {
   // This runs everytime whenever re-renders
   const [searchField, setSearchField] = useState('') // take an initial value, give back 2 things, [value, setValue]
   const [monsters, setMonsters] = useState([])
+  const [filteredMonsters, setFilteredMonsters] = useState(monsters)
   const [name, setName] = useState('Fuyang')
 
   // useEffect(() => {call_back}, [dependency array])
@@ -18,18 +19,23 @@ const App = () => {
     fetch('https://jsonplaceholder.typicode.com/users')
       .then(res => res.json())
       .then((users) => setMonsters(users)) // every time users is a same array but different pointer in memory, causes re-render
+    console.log("remote fetching...")
   }, []) // nothing triggers re-calling
+
+  useEffect(() => {
+      if (searchField != null) {
+        let filteredMonsters = monsters.filter((m) => m.name.toLowerCase().includes(searchField.toLowerCase()))
+        setFilteredMonsters(filteredMonsters)
+      }
+    }, [monsters, searchField]
+  )
 
   const onSearchChange = (event) => {
     let newSearchField = event.target.value;
     setSearchField((_) => {
+      console.log("search field changed!")
       return newSearchField // when this updated, React will re-render
     })
-  }
-
-  let filteredMonsters = monsters
-  if (searchField != null) {
-    filteredMonsters = monsters.filter((m) => m.name.toLowerCase().includes(searchField.toLowerCase()))
   }
 
   return (
