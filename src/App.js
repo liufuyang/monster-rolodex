@@ -58,7 +58,7 @@ const App = () => {
             setName((_name) => {
               return 'Andrei'
             })
-            console.log(this.state.name) // not recommended place to use state
+            console.log(name) // not recommended place to use state
           }}
         > Change Name
         </button>
