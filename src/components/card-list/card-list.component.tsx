@@ -1,10 +1,13 @@
 import './card-list.styles.css'
 import '../card/card.styles.css'
 import Card from "../card/card.component";
+import {Monster} from "../../App";
 
+type CardListProps = {
+  monsters: Monster[]
+}
 
-const CardList = (props, forwardRef) => {
-  const {monsters} = props; // *** whenever props change, component re-renders
+const CardList = ({monsters}: CardListProps) => {
   console.log("render by CardList")
   return (
     <div className='card-list'>

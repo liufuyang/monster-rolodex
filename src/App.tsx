@@ -1,25 +1,37 @@
-import {useEffect, useState} from "react";
+import {ChangeEvent, useEffect, useState} from "react";
 
 import logo from './logo.svg';
 import './App.css';
 import CardList from "./components/card-list/card-list.component";
 import SearchBox from "./components/search-box/search-box.component";
+import {getData} from "./utils/data.utils";
 
+export type Monster = {
+  id: string;
+  name: string;
+  email: string;
+}
 
 const App = () => {
   console.log("fun-render")
   // This runs everytime whenever re-renders
   const [searchField, setSearchField] = useState('') // take an initial value, give back 2 things, [value, setValue]
-  const [monsters, setMonsters] = useState([])
+  const [monsters, setMonsters] = useState<Monster[]>([])
   const [filteredMonsters, setFilteredMonsters] = useState(monsters)
   const [name, setName] = useState('Fuyang')
 
   // useEffect(() => {call_back}, [dependency array])
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(res => res.json())
-      .then((users) => setMonsters(users)) // every time users is a same array but different pointer in memory, causes re-render
-    console.log("remote fetching...")
+    // fetch('https://jsonplaceholder.typicode.com/users')
+    //   .then(res => res.json())
+    //   .then((users) => setMonsters(users)) // every time users is a same array but different pointer in memory, causes re-render
+    // console.log("remote fetching...")
+
+    const fetchUsers = async () => {
+      const users = await getData<Monster[]>("https://jsonplaceholder.typicode.com/users");
+      setMonsters(users)
+    }
+    fetchUsers()
   }, []) // nothing triggers re-calling
 
   useEffect(() => {
@@ -30,7 +42,7 @@ const App = () => {
     }, [monsters, searchField]
   )
 
-  const onSearchChange = (event) => {
+  const onSearchChange = (event: ChangeEvent<HTMLInputElement>): void => {
     let newSearchField = event.target.value;
     setSearchField((_) => {
       console.log("search field changed!")
